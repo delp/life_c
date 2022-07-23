@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 void draw_world(int* world, int w, int h) {
 
@@ -39,7 +40,7 @@ void print_nb_map(int* nb_map, int w, int h) {
 
 void update_world(int* map, int w, int h) {
 
-    int nb_map[25];
+    int nb_map[w * h];
     
     //Update neighbor map
     for(int y = 0; y < w; y++) {
@@ -92,7 +93,7 @@ void update_world(int* map, int w, int h) {
         }
     }
 
-    print_nb_map(nb_map, w, h);
+    //print_nb_map(nb_map, w, h);
 
     //update map based on neighbors
     for(int y = 0; y < h; y++) {
@@ -132,13 +133,40 @@ void simple_start(int* map, int w, int h) {
     }
 }
 
+void random_map(int* map, int w, int h) {
+
+    for(int y = 0; y < h; y++) {
+        for(int x = 0; x < w; x++) {
+            ////////////////////////////////////////////////
+            //  (rand() %  (upper - lower + 1)) + lower;  //
+            ////////////////////////////////////////////////
+            int r = rand() % (1-0 + 1) + 0;
+            map[y*w + x] = r;
+        }
+    }   
+}
+
+enum mode{preset, rando, hogwild};
+
 int main(int argc, char** argv) {
-    int w = 5;
-    int h = 5;
-    int* map = get_map(w, h);
     
-    zero_map(map, w, h);
-    simple_start(map, w, h);
+    srand(time(NULL));   
+
+    int w = 32;
+    int h = 32;
+    int* map = get_map(w, h);
+
+    //enum mode currentMode = preset;
+    enum mode currentMode = rando;
+    
+    if (currentMode == preset) {
+        zero_map(map, w, h);
+        simple_start(map, w, h);
+    } else if (currentMode == rando) {
+        zero_map(map, w, h);
+        random_map(map, w, h);
+    }
+
 
     while(1) {
         draw_world(map, w, h);
