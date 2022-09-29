@@ -3,9 +3,8 @@
 #include <time.h>
 
 void draw_world(int* world, int w, int h) {
-
-    for(int y = 0; y < w; y++) {
-        for(int x=0; x < h; x++) {
+    for(int y = 0; y < h; y++) {
+        for(int x=0; x < w; x++) {
             int val = world[y * w + x];
             if (val == 1) { 
                 printf("* ");
@@ -18,8 +17,8 @@ void draw_world(int* world, int w, int h) {
 }
 
 void zero_map(int* world, int w, int h) {
-    for(int y = 0; y < w; y++) {
-        for(int x = 0; x < h; x++) {
+    for(int y = 0; y < h; y++) {
+        for(int x = 0; x < w; x++) {
             world[y * w + x] = 0;
         }
     }
@@ -39,12 +38,11 @@ void print_nb_map(int* nb_map, int w, int h) {
 }
 
 void update_world(int* map, int w, int h) {
-
     int nb_map[w * h];
     
     //Update neighbor map
-    for(int y = 0; y < w; y++) {
-        for(int x = 0; x < h; x++) {
+    for(int y = 0; y < h; y++) {
+        for(int x = 0; x < w; x++) {
 
             int ul, u, ur, l, r, dl, d, dr;
 
@@ -116,25 +114,7 @@ void update_world(int* map, int w, int h) {
     }
 }
 
-void simple_start(int* map, int w, int h) {
-
-   /* 0,0,0,0,0
-      0,0,1,1,0,
-      0,0,1,0,0,
-      0,0,1,0,0,
-      0,0,1,0,0,
-   */
-    
-    int desired[] = {0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0};
-    for(int y = 0; y < w; y++) {
-        for(int x = 0; x < h; x++) {
-            map[y * w + x] = desired[y * w + x];
-        }
-    }
-}
-
 void random_map(int* map, int w, int h) {
-
     for(int y = 0; y < h; y++) {
         for(int x = 0; x < w; x++) {
             ////////////////////////////////////////////////
@@ -149,7 +129,6 @@ void random_map(int* map, int w, int h) {
 enum mode{preset, rando, hogwild};
 
 int main(int argc, char** argv) {
-    
     srand(time(NULL));   
 
     int w = 32;
@@ -161,7 +140,6 @@ int main(int argc, char** argv) {
     
     if (currentMode == preset) {
         zero_map(map, w, h);
-        simple_start(map, w, h);
     } else if (currentMode == rando) {
         zero_map(map, w, h);
         random_map(map, w, h);
